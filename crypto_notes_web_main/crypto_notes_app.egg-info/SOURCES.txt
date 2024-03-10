@@ -1,0 +1,10 @@
+setup.py
+crypto_notes_app/__init__.py
+crypto_notes_app/main.py
+crypto_notes_app/views.py
+crypto_notes_app.egg-info/PKG-INFO
+crypto_notes_app.egg-info/SOURCES.txt
+crypto_notes_app.egg-info/dependency_links.txt
+crypto_notes_app.egg-info/entry_points.txt
+crypto_notes_app.egg-info/requires.txt
+crypto_notes_app.egg-info/top_level.txt
