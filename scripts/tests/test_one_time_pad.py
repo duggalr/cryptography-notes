@@ -5,7 +5,7 @@ import unittest
 from one_time_pad import OneTimePad
 
 
-class TestBook(unittest.TestCase):
+class TestOneTimePad(unittest.TestCase):
     """
     Test cases for the OneTimePad class.
 
