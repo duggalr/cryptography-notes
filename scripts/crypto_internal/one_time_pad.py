@@ -2,7 +2,6 @@ import warnings
 import secrets
 import string
 
-
 class OneTimePad(object):
     """
     Implementation of the One-Time Pad Cipher.
@@ -14,7 +13,7 @@ class OneTimePad(object):
 
     By following these rules, the one-time pad cipher is considered unbreakable.
 
-    Notes Source: https://inventwithpython.com/hacking/chapter22.html
+    Additional Information: https://inventwithpython.com/hacking/chapter22.html
     """
 
     def __init__(self, key: str) -> None:
@@ -41,6 +40,10 @@ class OneTimePad(object):
     @property
     def key(self) -> str:
         return self._key
+
+    def _check_str(self, name: str, value: str) -> None:
+        if not isinstance(value, str):
+            raise TypeError(f"{name} must be a valid string.")
 
     @classmethod
     def generate_key(cls, key_length: int) -> str:
@@ -122,9 +125,7 @@ class OneTimePad(object):
         Raises:
             TypeError: If plaintext is not a valid string.
         """
-        if not isinstance(plaintext, str):
-            raise TypeError("plaintext must be a valid string.")
-        
+        self._check_str('plaintext', plaintext)
         key = self._handle_key_length(self.key, plaintext)
 
         encrypted_msg = ""
@@ -146,9 +147,7 @@ class OneTimePad(object):
         Raises:
             TypeError: If ciphertext is not a valid string.
         """
-        if not isinstance(ciphertext, str):
-            raise TypeError("plaintext must be a valid string.")
-
+        self._check_str('ciphertext', ciphertext)
         key = self._handle_key_length(self.key, ciphertext)
         
         decrypted_msg = ""
@@ -156,4 +155,3 @@ class OneTimePad(object):
             d_char = self._operate(c, k, 'decrypt')
             decrypted_msg += d_char
         return decrypted_msg
-

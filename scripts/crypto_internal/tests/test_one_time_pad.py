@@ -1,7 +1,9 @@
 import os
 import sys
+# Credit for below line: https://stackoverflow.com/questions/714063/importing-modules-from-parent-folder
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 import unittest
+# from scripts.crypto_internal.one_time_pad import OneTimePad
 from one_time_pad import OneTimePad
 
 

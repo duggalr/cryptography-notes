@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>one_time_pad &mdash; crypto-internal 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            crypto-internal
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">crypto_internal</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">crypto-internal</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">one_time_pad</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for one_time_pad</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">secrets</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<div class="viewcode-block" id="OneTimePad">
+<a class="viewcode-back" href="../one_time_pad.html#one_time_pad.OneTimePad">[docs]</a>
+<span class="k">class</span> <span class="nc">OneTimePad</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implementation of the One-Time Pad Cipher.</span>
+
+<span class="sd">    The one-time pad cipher is a Vigenère cipher where:</span>
+<span class="sd">    1. The key is exactly as long as the message that is encrypted.</span>
+<span class="sd">    2. The key is made up of truly random symbols.</span>
+<span class="sd">    3. The key is used only once for a single message.</span>
+
+<span class="sd">    By following these rules, the one-time pad cipher is considered unbreakable.</span>
+
+<span class="sd">    Additional Information: https://inventwithpython.com/hacking/chapter22.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the OneTimePad object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): The key for encryption and decryption.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided key is not a valid string.</span>
+<span class="sd">            Exception: If the key length is 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Key must be a valid string.&quot;</span><span class="p">)</span>
+    
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Key must have a length greater than 0.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">key</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
+
+    <span class="k">def</span> <span class="nf">_check_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a valid string.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OneTimePad.generate_key">
+<a class="viewcode-back" href="../one_time_pad.html#one_time_pad.OneTimePad.generate_key">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">generate_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a cryptographically random one time pad/key for encryption.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key_length (int): The length of the key.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: A randomly generated key.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If key_length is not a valid integer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key_length</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;key_length must be a valid integer.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">secrets</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">key_length</span><span class="p">))</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_operate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">char2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform the specified operation on two characters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            char1 (str): The first character.</span>
+<span class="sd">            char2 (str): The second character.</span>
+<span class="sd">            operation (str): The operation to perform (&#39;encrypt&#39; or &#39;decrypt&#39;).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The result of the operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">char1</span><span class="p">,</span> <span class="nb">str</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">char2</span><span class="p">,</span> <span class="nb">str</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">char1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">char2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input characters must be single characters.&quot;</span><span class="p">)</span>
+
+        <span class="n">char1_ord</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">char1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">32</span>
+        <span class="n">char2_ord</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">char2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">32</span>
+
+        <span class="k">if</span> <span class="n">operation</span> <span class="o">==</span> <span class="s1">&#39;encrypt&#39;</span><span class="p">:</span>
+            <span class="n">result_ord</span> <span class="o">=</span> <span class="p">(</span><span class="n">char1_ord</span> <span class="o">+</span> <span class="n">char2_ord</span><span class="p">)</span> <span class="o">%</span> <span class="mi">95</span>
+        <span class="k">elif</span> <span class="n">operation</span> <span class="o">==</span> <span class="s1">&#39;decrypt&#39;</span><span class="p">:</span>
+            <span class="n">result_ord</span> <span class="o">=</span> <span class="p">(</span><span class="n">char1_ord</span> <span class="o">-</span> <span class="n">char2_ord</span><span class="p">)</span> <span class="o">%</span> <span class="mi">95</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid operation. Use &#39;encrypt&#39; or &#39;decrypt&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span><span class="n">result_ord</span> <span class="o">+</span> <span class="mi">32</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_handle_key_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ensure the key is of the same length as the provided text.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): The key.</span>
+<span class="sd">            text (str): The text.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The processed key.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The key must be equal to or greater than the length of the text.&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Your key is is longer than your plaintext. Will truncate the key to exactly match the length of the text.&#39;</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="n">key</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">key</span>
+
+<div class="viewcode-block" id="OneTimePad.encrypt">
+<a class="viewcode-back" href="../one_time_pad.html#one_time_pad.OneTimePad.encrypt">[docs]</a>
+    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Encrypt the provided plaintext using the one-time pad cipher.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            plaintext (str): The plaintext to be encrypted.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The encrypted message.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If plaintext is not a valid string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_str</span><span class="p">(</span><span class="s1">&#39;plaintext&#39;</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_key_length</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">)</span>
+
+        <span class="n">encrypted_msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+            <span class="n">e_char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operate</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="s1">&#39;encrypt&#39;</span><span class="p">)</span>
+            <span class="n">encrypted_msg</span> <span class="o">+=</span> <span class="n">e_char</span>
+        <span class="k">return</span> <span class="n">encrypted_msg</span></div>
+
+
+<div class="viewcode-block" id="OneTimePad.decrypt">
+<a class="viewcode-back" href="../one_time_pad.html#one_time_pad.OneTimePad.decrypt">[docs]</a>
+    <span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decrypt the provided ciphertext using the one-time pad cipher.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ciphertext (str): The ciphertext to be decrypted.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The decrypted message.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If ciphertext is not a valid string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_str</span><span class="p">(</span><span class="s1">&#39;ciphertext&#39;</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_key_length</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
+        
+        <span class="n">decrypted_msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+            <span class="n">d_char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operate</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="s1">&#39;decrypt&#39;</span><span class="p">)</span>
+            <span class="n">decrypted_msg</span> <span class="o">+=</span> <span class="n">d_char</span>
+        <span class="k">return</span> <span class="n">decrypted_msg</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rahul.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

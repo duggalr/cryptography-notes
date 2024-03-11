@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>one_time_pad module &mdash; crypto-internal 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2709fde1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="crypto_internal" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            crypto-internal
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">crypto_internal</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">one_time_pad module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#one_time_pad.OneTimePad"><code class="docutils literal notranslate"><span class="pre">OneTimePad</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#one_time_pad.OneTimePad.decrypt"><code class="docutils literal notranslate"><span class="pre">OneTimePad.decrypt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#one_time_pad.OneTimePad.encrypt"><code class="docutils literal notranslate"><span class="pre">OneTimePad.encrypt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#one_time_pad.OneTimePad.generate_key"><code class="docutils literal notranslate"><span class="pre">OneTimePad.generate_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#one_time_pad.OneTimePad.key"><code class="docutils literal notranslate"><span class="pre">OneTimePad.key</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">crypto-internal</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">crypto_internal</a></li>
+      <li class="breadcrumb-item active">one_time_pad module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/one_time_pad.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-one_time_pad">
+<span id="one-time-pad-module"></span><h1>one_time_pad module<a class="headerlink" href="#module-one_time_pad" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="one_time_pad.OneTimePad">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">one_time_pad.</span></span><span class="sig-name descname"><span class="pre">OneTimePad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/one_time_pad.html#OneTimePad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#one_time_pad.OneTimePad" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implementation of the One-Time Pad Cipher.</p>
+<p>The one-time pad cipher is a Vigenère cipher where:
+1. The key is exactly as long as the message that is encrypted.
+2. The key is made up of truly random symbols.
+3. The key is used only once for a single message.</p>
+<p>By following these rules, the one-time pad cipher is considered unbreakable.</p>
+<p>Additional Information: <a class="reference external" href="https://inventwithpython.com/hacking/chapter22.html">https://inventwithpython.com/hacking/chapter22.html</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="one_time_pad.OneTimePad.decrypt">
+<span class="sig-name descname"><span class="pre">decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ciphertext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/one_time_pad.html#OneTimePad.decrypt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#one_time_pad.OneTimePad.decrypt" title="Link to this definition"></a></dt>
+<dd><p>Decrypt the provided ciphertext using the one-time pad cipher.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ciphertext</strong> (<em>str</em>) – The ciphertext to be decrypted.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The decrypted message.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If ciphertext is not a valid string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="one_time_pad.OneTimePad.encrypt">
+<span class="sig-name descname"><span class="pre">encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plaintext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/one_time_pad.html#OneTimePad.encrypt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#one_time_pad.OneTimePad.encrypt" title="Link to this definition"></a></dt>
+<dd><p>Encrypt the provided plaintext using the one-time pad cipher.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>plaintext</strong> (<em>str</em>) – The plaintext to be encrypted.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The encrypted message.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If plaintext is not a valid string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="one_time_pad.OneTimePad.generate_key">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/one_time_pad.html#OneTimePad.generate_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#one_time_pad.OneTimePad.generate_key" title="Link to this definition"></a></dt>
+<dd><p>Generate a cryptographically random one time pad/key for encryption.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key_length</strong> (<em>int</em>) – The length of the key.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A randomly generated key.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If key_length is not a valid integer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="one_time_pad.OneTimePad.key">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#one_time_pad.OneTimePad.key" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="crypto_internal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Rahul.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
