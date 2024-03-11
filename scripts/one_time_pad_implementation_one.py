@@ -1,5 +1,6 @@
 import base64
 import os
+import warnings
 import string
 import secrets
 
@@ -100,44 +101,151 @@ import secrets
 # print(encrypted_message)
 
 
-def generate_one_time_pad(key_length):
-    return ''.join(secrets.choice(string.ascii_letters) for _ in range(key_length))
-
-def _encrypt_operate(m: str, c: str) -> str:
+class OneTimePad(object):
     """
     """
-    return (string.ascii_lowercase.index(m) + string.ascii_lowercase.index(c)) % 26
+    
+    def __init__(self, key: str) -> None:
+        """
+        """
+        try:
+            key = key.strip()
+        except:
+            raise ValueError("Key must be a valid string.")
+    
+        if len(key) == 0:
+            raise Exception("Key must have length > 0.")
 
-def _decrypt_operate(c: str, k: str) -> str:
-    return (string.ascii_letters.index(c) - string.ascii_letters.index(k)) % 26
+        self.key = key
 
-def encrypt(key: str, plaintext: str):
-    msg_num_of_characters = len(plaintext)
-    encrypted_msg = ""
-    for idx in range(0, msg_num_of_characters):
-        m = plaintext[idx]
-        c = key[idx]
-        e_idx = _encrypt_operate(m, c)
-        e_char = string.ascii_lowercase[e_idx]
-        encrypted_msg += e_char
-    return encrypted_msg
+        # if plaintext is not None and len(plaintext.strip()) == 0:
+        #     raise Exception("Plaintext must have length > 0.")
+        
+        # if key is not None and len(key.strip()) == 0:
+        #     raise Exception("Key must have length > 0.")
 
-def decrypt(key: str, ciphertext: str):
-    ciphertext_num_of_characters = len(ciphertext)
-    decrypted_msg = ""
-    for idx in range(0, ciphertext_num_of_characters):
-        c = ciphertext[idx]
-        k = key[idx]
-        e_idx = _decrypt_operate(c, k)
-        e_char = string.ascii_lowercase[e_idx]
-        decrypted_msg += e_char
-    return decrypted_msg
+        # if plaintext is not None and key is not None and len(key) < len(plaintext):
+        #     raise Exception("The key must be equal to or greater than the length of the plaintext.")
+
+        # if len(key) > len(plaintext):
+        #     warnings.warn('Your key is is longer than your plaintext. Will truncate the key to exactly match the length of the plaintext...')
+        #     length_of_plaintext = len(plaintext)
+        #     self.key = key[:length_of_plaintext]
+        #     self.plaintext = plaintext
+        # else:
+        #     self.plaintext = plaintext
+        #     self.key = key
+
+    @classmethod
+    def generate_key(cls, key_length: int) -> str:
+        """
+        """
+        if not isinstance(key_length, int):
+            raise TypeError("key_length must be a valid integer.")
+
+        return ''.join(secrets.choice(string.ascii_lowercase) for _ in range(key_length))
+
+    def _encrypt_operate(self, m: str, c: str) -> str:
+        """
+        """
+        return (string.ascii_lowercase.index(m) + string.ascii_lowercase.index(c)) % 26
+
+    def _decrypt_operate(self, c: str, k: str) -> str:
+        """
+        """
+        return (string.ascii_letters.index(c) - string.ascii_letters.index(k)) % 26
+
+    def encrypt(self, plaintext: str) -> str:
+        """
+        """
+        if not isinstance(plaintext, str):
+            raise TypeError("plaintext must be a valid string.")
+
+        msg_num_of_characters = len(plaintext)
+        if len(self.key) < len(plaintext):
+            raise Exception("The key must be equal to or greater than the length of the plaintext.")
+        
+        encrypted_msg = ""
+        for idx in range(0, msg_num_of_characters):
+            m = plaintext[idx]
+            c = self.key[idx]
+            e_idx = self._encrypt_operate(m, c)
+            e_char = string.ascii_lowercase[e_idx]
+            encrypted_msg += e_char
+        return encrypted_msg
+
+    def decrypt(self, ciphertext: str) -> str:
+        """
+        """
+        if not isinstance(ciphertext, str):
+            raise TypeError("ciphertext must be a valid string.")
+        
+        ciphertext_num_of_characters = len(ciphertext)
+        if len(self.key) < len(ciphertext):
+            raise Exception("The key must be equal to or greater than the length of the plaintext.")
+
+        decrypted_msg = ""
+        for idx in range(0, ciphertext_num_of_characters):
+            c = ciphertext[idx]
+            k = self.key[idx]
+            e_idx = self._decrypt_operate(c, k)
+            e_char = string.ascii_lowercase[e_idx]
+            decrypted_msg += e_char
+        return decrypted_msg
+
+# TODO:
+    # leverage AI to refactor above code and generate documentation
+    # do same for other implementation
+    # auto-generate docs and see how it looks in html
+
+data = 'This is a class method.'
+key_length = len(data)
+cipher_key = OneTimePad.generate_key(key_length)
+print(cipher_key)
+
+otp = OneTimePad(key = cipher_key)
+enc_data = otp.encrypt(data)
+print(enc_data)
 
 
-message = "attackatdawn"
-key = "lemonlemonle"
-ciphertext = encrypt(key, message)
-print(ciphertext)
-decrypted_message = decrypt(key, ciphertext)
-print(decrypted_message)
+# def generate_one_time_pad(key_length):
+#     return ''.join(secrets.choice(string.ascii_letters) for _ in range(key_length))
+
+# def _encrypt_operate(m: str, c: str) -> str:
+#     """
+#     """
+#     return (string.ascii_lowercase.index(m) + string.ascii_lowercase.index(c)) % 26
+
+# def _decrypt_operate(c: str, k: str) -> str:
+#     return (string.ascii_letters.index(c) - string.ascii_letters.index(k)) % 26
+
+# def encrypt(key: str, plaintext: str):
+#     msg_num_of_characters = len(plaintext)
+#     encrypted_msg = ""
+#     for idx in range(0, msg_num_of_characters):
+#         m = plaintext[idx]
+#         c = key[idx]
+#         e_idx = _encrypt_operate(m, c)
+#         e_char = string.ascii_lowercase[e_idx]
+#         encrypted_msg += e_char
+#     return encrypted_msg
+
+# def decrypt(key: str, ciphertext: str):
+#     ciphertext_num_of_characters = len(ciphertext)
+#     decrypted_msg = ""
+#     for idx in range(0, ciphertext_num_of_characters):
+#         c = ciphertext[idx]
+#         k = key[idx]
+#         e_idx = _decrypt_operate(c, k)
+#         e_char = string.ascii_lowercase[e_idx]
+#         decrypted_msg += e_char
+#     return decrypted_msg
+
+
+# message = "attackatdawn"
+# key = "lemonlemonle"
+# ciphertext = encrypt(key, message)
+# print(ciphertext)
+# decrypted_message = decrypt(key, ciphertext)
+# print(decrypted_message)
 
