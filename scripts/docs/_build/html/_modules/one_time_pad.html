@@ -204,6 +204,8 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            TypeError: If plaintext is not a valid string.</span>
+<span class="sd">        </span>
+<span class="sd">        Algebraic description: https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_str</span><span class="p">(</span><span class="s1">&#39;plaintext&#39;</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">)</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_key_length</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">)</span>
@@ -229,6 +231,8 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            TypeError: If ciphertext is not a valid string.</span>
+<span class="sd">        </span>
+<span class="sd">        Algebraic description: https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_str</span><span class="p">(</span><span class="s1">&#39;ciphertext&#39;</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_key_length</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>

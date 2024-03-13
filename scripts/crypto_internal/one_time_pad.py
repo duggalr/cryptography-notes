@@ -124,6 +124,8 @@ class OneTimePad(object):
 
         Raises:
             TypeError: If plaintext is not a valid string.
+        
+        Algebraic description: https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher
         """
         self._check_str('plaintext', plaintext)
         key = self._handle_key_length(self.key, plaintext)
@@ -146,6 +148,8 @@ class OneTimePad(object):
 
         Raises:
             TypeError: If ciphertext is not a valid string.
+        
+        Algebraic description: https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher
         """
         self._check_str('ciphertext', ciphertext)
         key = self._handle_key_length(self.key, ciphertext)
